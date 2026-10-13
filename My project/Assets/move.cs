@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class move : MonoBehaviour
 {
+    private Animator anim;
     public float movespeed;
     public float jumphight;
     public KeyCode spacebar;
@@ -17,7 +18,7 @@ public class move : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+         anim= GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -41,16 +42,19 @@ public class move : MonoBehaviour
             }
         }
 
-        void jump()
-        {
-            GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, jumphight);
-        }
-        
+       anim.SetFloat("speed",Mathf.Abs(GetComponent<Rigidbody2D>().velocity.x));
+       anim.SetFloat("height", GetComponent<Rigidbody2D>().velocity.y);
+       anim.SetBool("grounded",grounded);
     }
 
     void FixedUpdate()
         {
             grounded = Physics2D.OverlapCircle(groundcheck.position, groundcheckradius, whatisground);
 
+        }
+
+             void jump()
+        {
+            GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, jumphight);
         }
 }
